@@ -1,0 +1,21 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Transaksi extends Model
+{
+    protected $fillable = ['user_id', 'kode_payment','kode_trx', 'total_item', 'total_harga', 'kode_unik', 'status', 'resi', 'kurir', 'name', 'phone', 'detail_lokasi', 'metode', 'deskripsi', 'expired_at', 'jasa_pengiriman', 'ongkir', 'total_transfer', 'bank'];
+
+    public function details(){
+        return $this->hasMany(TransaksiDetail::class, "transaksi_id", "id");
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,  "user_id",  "id");
+    }
+
+}
