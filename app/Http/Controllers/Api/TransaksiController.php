@@ -165,8 +165,14 @@ class TransaksiController extends Controller
         return $data;
     }
 
-    public function upload(Request $request){
+    public function upload(Request $request, $id){
        
+        
+
+        $transaksi = Transaksi::with(['details.produk', 'user'])->where('id', $id)->first();
+        if ($transaksi){
+            //update data
+
         $fileName = '';
         if($request->image->getClientOriginalName()){
             $file = str_replace(' ',' ', $request->image->getClientOriginalName());
@@ -177,11 +183,21 @@ class TransaksiController extends Controller
             return $this->error('Gagal memuat data');
         }
 
-        return response()->json([
-                'success' => 1,
-                'message' => 'Berhasil upload bukti transfer',
-                'image' => $fileName
+
+            $transaksi->update([
+                'status' => "DIBAYAR"
             ]);
+
+            $this->PushNotif('Transaksi Dibayar',"Transaksi Produk ".  $transaksi->details[0]->produk->name ." Berhasil Dibatalkan", $transaksi->user->fcm);
+
+            return response()->json([
+                'success' => 1,
+                'message' => 'Berhasil',
+                'transaksi' => $transaksi
+            ]);
+        } else {
+            return $this->error('Gagal memuat transaksi');
+        }
     }
 
     public function error($pesan){
