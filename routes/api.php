@@ -24,6 +24,6 @@ Route::get('produk','Api\ProdukController@index');
 Route::post('checkout','Api\TransaksiController@store');
 Route::get('checkout/user/{id}','Api\TransaksiController@history');
 
-Route::post('checkout/upload{id}','Api\TransaksiController@upload');
+Route::post('checkout/upload/{id}','Api\TransaksiController@upload');
 
 Route::post('push','Api\TransaksiController@pushNotif');
