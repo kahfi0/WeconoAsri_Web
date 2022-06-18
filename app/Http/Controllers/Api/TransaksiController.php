@@ -167,8 +167,6 @@ class TransaksiController extends Controller
 
     public function upload(Request $request, $id){
        
-        
-
         $transaksi = Transaksi::with(['details.produk', 'user'])->where('id', $id)->first();
         if ($transaksi){
             //update data
