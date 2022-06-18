@@ -165,6 +165,25 @@ class TransaksiController extends Controller
         return $data;
     }
 
+    public function upload(Request $request){
+       
+        $fileName = '';
+        if($request->image->getClientOriginalName()){
+            $file = str_replace(' ',' ', $request->image->getClientOriginalName());
+            $fileName = date('mYdHs').rand(1, 999).'_'.$file;
+            $request->image->storeAs('public/transfer', $fileName);
+        
+        }else{
+            return $this->error('Gagal memuat data');
+        }
+
+        return response()->json([
+                'success' => 1,
+                'message' => 'Berhasil upload bukti transfer',
+                'image' => $fileName
+            ]);
+    }
+
     public function error($pesan){
         return response()->json([
             'success' => 0,
