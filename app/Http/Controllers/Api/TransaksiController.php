@@ -183,17 +183,20 @@ class TransaksiController extends Controller
 
 
             $transaksi->update([
-                'status' => "DIBAYAR"
+                'status' => "DIBAYAR",
+                'bukti_transfer' => $fileName
             ]);
 
-            $this->PushNotif('Transaksi Dibayar',"Transaksi Produk ".  $transaksi->details[0]->produk->name ." Berhasil Dibatalkan", $transaksi->user->fcm);
+            $this->PushNotif('Transaksi Dibayar',"Transaksi Produk ".  $transaksi->details[0]->produk->name ." Berhasil Dibayar", $transaksi->user->fcm);
 
             return response()->json([
                 'success' => 1,
                 'message' => 'Berhasil',
                 'transaksi' => $transaksi
             ]);
+
         } else {
+
             return $this->error('Gagal memuat transaksi');
         }
     }

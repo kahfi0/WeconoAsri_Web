@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaksi extends Model
 {
-    protected $fillable = ['user_id', 'kode_payment','kode_trx', 'total_item', 'total_harga', 'kode_unik', 'status', 'resi', 'kurir', 'name', 'phone', 'detail_lokasi', 'metode', 'deskripsi', 'expired_at', 'jasa_pengiriman', 'ongkir', 'total_transfer', 'bank'];
+    protected $fillable = ['user_id', 'kode_payment','kode_trx', 'total_item', 'total_harga', 'kode_unik', 'status', 'resi', 'kurir', 'name', 'phone', 'detail_lokasi', 'metode', 'deskripsi', 'expired_at', 'jasa_pengiriman', 'ongkir', 'total_transfer', 'bank', 'bukti_transfer'];
 
     public function details(){
         return $this->hasMany(TransaksiDetail::class, "transaksi_id", "id");
