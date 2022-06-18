@@ -90,7 +90,7 @@
                               <td>{{ $data->bank }}</td>
                               <td>{{ $data->status }}</td>
                               <td></td>
-                              <td><a href="{{ asset('public/storage/transfer/'.$data->bukti_transfer) }}" target= "_blank">Lihat Bukti Transfer</a>
+                              <td><a href="{{ asset('public/storage/transfer/'.$data->bukti_transfer) }}" target= "_blank">Lihat Bukti Transfer</a></td>
 
                                   @if($data->status == "DIKIRIM")
                                     <a href="{{ route('transaksiSelesai', $data->id) }}">
