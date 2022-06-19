@@ -25,7 +25,7 @@
 
         <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Transaksi Table</h3>
+                <h3 class="card-title">Produk Table</h3>
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i> Add item</button>
               </div>
               <!-- /.card-header -->
@@ -53,7 +53,10 @@
                       </a>
                       |
                       <a href = "#">
-                          <i class = "fa fa-trash red"></i>
+                          <i class = "fa fa-trash red"
+                          data-id="{{$data->id}}"
+                          data-toggle="modal"
+                          data-target="#delete"></i>
                       </a>
                       </td>
                     </tr>
@@ -66,7 +69,7 @@
 
         </div><!-- /.container-fluid -->
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -75,58 +78,65 @@
             <span aria-hidden="true">&times;</span>
             </button>
           </div>
-              <!-- form start -->
-              <form method="POST" action="{{ route('produk.store') }}" role="form" enctype="multipart/form-data">
-              @csrf
+
+    </div> --> -->
+
+    <div class="modal modal-danger fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="addNewLabel">Delete Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- form start -->
+            <form method="POST" action="#">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="modal-body">
-                  <div class="form-group">
-                    <label>Nama</label>
-                    <input type="text" class="form-control" id="nama" placeholder="Nama" name="name">
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <!-- text input -->
-                      <div class="form-group">
-                        <label>Harga</label>
-                        <input type="text" class="form-control" placeholder="Harga" name="harga">
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Pilih Kategori</label>
-                        <select class="form-control" name="category_id">
-                          <option value=1>Batik Tulis</option>
-                          <option value="1">Batik Jumput</option>
+                    <input type="hidden" name="id" id="iddata" value="">
 
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                      <label>Deskripsi</label>
-                      <textarea class="form-control" rows="3" placeholder="Deskripsi" name="deskripsi"></textarea>
-                      </div>
-                  <div class="form-group">
-                    <label for="exampleInputFile">File Gambar</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile" name="image">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                    </div>
-                  </div>
+                    <p class="text-center">
+                        Apakah anda ingin menghapus produk ini?
+                    </p>
+
                 </div>
-                <!-- /.card-body -->
-
+                
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="button" id="btn_delete" class="btn btn-primary">Yes, Delete</button>
                 </div>
-              </form>
-
+            </form>
+        </div>
+        </div>
     </div>
-  </div>
-</div>
     </section>
     <!-- /.content -->
 @endsection
+
+@section('js')
+  <script>
+    $('#delete').on('show.bs.modal', function (event){
+        var data = $(event.relatedTarget)
+        var iddata = data.data('id')
+
+        var modal = $(this)
+        modal.find('.modal-body #iddata').val(iddata)
+
+        $('#btn_delete').click(function(e){
+
+            $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: '{{ route('deleteProduk') }}',
+              data: {'id': iddata},
+              success: function (data){
+                console.log(data)
+                // location.reload()
+              }
+            })
+        })      
+    })
+  </script>
+@endsection
+
